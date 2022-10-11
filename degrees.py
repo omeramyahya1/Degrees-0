@@ -93,7 +93,18 @@ def shortest_path(source, target):
     """
 
     # TODO
-    raise NotImplementedError
+
+    Frontier = StackFrontier()
+
+    neighbors = neighbors_for_person(source)
+    for state in neighbors:
+        node = Node(state[1], source, state[0])
+        Frontier.add(node)
+    for node in Frontier.frontier:
+        print(node.state)
+
+
+    #raise NotImplementedError
 
 
 def person_id_for_name(name):
