@@ -94,18 +94,20 @@ def shortest_path(source, target):
     """
 
     # TODO
+    source = Node(source, None, None)
     frontier = StackFrontier()
     frontier.add(source)
-
+    
     def check(source):
         for node in neighbors_for_person(source):
-            if node == target:
+            node = Node(node[1], source, node[0])
+            if node.state == target:
                 return back_porp(node)
             else:
                 frontier.add(node)
         if frontier.contains_state(target):
             for node in frontier:
-                if node == target:
+                if node.state == target:
                     return back_porp(node)
         else:
             source = frontier.remove()
@@ -116,7 +118,11 @@ def shortest_path(source, target):
         path = []
         while node.parent != None:
             path.append((node.action, node.parent))
+            node = node.parent
 
+        return path 
+
+    return check(source)
     #raise NotImplementedError
 
 
