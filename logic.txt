@@ -1,0 +1,25 @@
+# Psudo code
+A node is a person with a set of movies
+if the set of movies is empty ==> No more searching
+
+Frontier = []
+
+def check(node, goal)
+    take source node
+    for action in node.actions:
+        Frontier.add(Node(source.action))
+    does the Frontier contain the goal?
+    if True:
+        return back prop(goal node)
+    if Not: 
+        source =  Frontier.remove()
+        check(source)
+
+
+def back prop(node):
+    path []
+    While node.paretn =! None:
+        path.append(node)
+        node = node.parent
+
+    return path.reverse(), len(path)

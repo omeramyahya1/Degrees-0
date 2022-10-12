@@ -1,3 +1,4 @@
+from ast import NodeTransformer
 import csv
 import sys
 
@@ -93,16 +94,28 @@ def shortest_path(source, target):
     """
 
     # TODO
+    frontier = StackFrontier()
+    frontier.add(source)
 
-    Frontier = StackFrontier()
+    def check(source):
+        for node in neighbors_for_person(source):
+            if node == target:
+                return back_porp(node)
+            else:
+                frontier.add(node)
+        if frontier.contains_state(target):
+            for node in frontier:
+                if node == target:
+                    return back_porp(node)
+        else:
+            source = frontier.remove()
+            check(source)
 
-    neighbors = neighbors_for_person(source)
-    for state in neighbors:
-        node = Node(state[1], source, state[0])
-        Frontier.add(node)
-    for node in Frontier.frontier:
-        print(node.state)
-
+    
+    def back_porp(node):
+        path = []
+        while node.parent != None:
+            path.append((node.action, node.parent))
 
     #raise NotImplementedError
 
