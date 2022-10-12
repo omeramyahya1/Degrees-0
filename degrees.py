@@ -94,25 +94,50 @@ def shortest_path(source, target):
     """
 
     # TODO
-    source = Node(source, None, None)
+    source_node = Node(source, None, None)
     frontier = StackFrontier()
-    frontier.add(source)
+    frontier.add(source_node)
     
     def check(source):
-        for node in neighbors_for_person(source):
-            node = Node(node[1], source, node[0])
-            if node.state == target:
-                return back_porp(node)
-            else:
-                frontier.add(node)
-        if frontier.contains_state(target):
-            for node in frontier:
-                if node.state == target:
-                    return back_porp(node)
-        else:
-            source = frontier.remove()
-            check(source)
 
+        num_explored = 0
+        explored = set()
+
+        while True:
+            if frontier.empty():
+                return []
+            
+            source = frontier.remove()
+            num_explored += 1
+
+            if source.state == target:
+                return back_porp(source)
+
+            explored.add(source.state)
+
+
+            for neighbor in neighbors_for_person(source.state):
+                check(neighbor.state)
+
+            
+
+
+        # for neighbor in neighbors_for_person(source.state):
+        #     node = Node(neighbor[1], source, neighbor[0])
+        #     if node.state == target:
+        #         return back_porp(node)
+        #     else:
+        #         frontier.add(node)
+        # if frontier.contains_state(target):
+        #     for node in frontier:
+        #         if node.state == target:
+        #             return back_porp(node)
+        # else:
+        # if frontier.empty():
+        #     return []
+        # else:
+        #     source = frontier.remove()
+        #     check(source)
     
     def back_porp(node):
         path = []
@@ -120,7 +145,7 @@ def shortest_path(source, target):
             path.append((node.action, node.parent))
             node = node.parent
 
-        return path 
+        return path.reverse()
 
     return check(source)
     #raise NotImplementedError
