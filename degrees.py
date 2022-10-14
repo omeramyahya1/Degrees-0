@@ -97,47 +97,7 @@ def shortest_path(source, target):
     source_node = Node(source, None, None)
     frontier = StackFrontier()
     frontier.add(source_node)
-    
-    def check(source):
-
-        num_explored = 0
-        explored = set()
-
-        while True:
-            if frontier.empty():
-                return []
-            
-            source = frontier.remove()
-            num_explored += 1
-
-            if source.state == target:
-                return back_porp(source)
-
-            explored.add(source.state)
-
-
-            for neighbor in neighbors_for_person(source.state):
-                check(neighbor.state)
-
-            
-
-
-        # for neighbor in neighbors_for_person(source.state):
-        #     node = Node(neighbor[1], source, neighbor[0])
-        #     if node.state == target:
-        #         return back_porp(node)
-        #     else:
-        #         frontier.add(node)
-        # if frontier.contains_state(target):
-        #     for node in frontier:
-        #         if node.state == target:
-        #             return back_porp(node)
-        # else:
-        # if frontier.empty():
-        #     return []
-        # else:
-        #     source = frontier.remove()
-        #     check(source)
+    explored = set()
     
     def back_porp(node):
         path = []
@@ -147,8 +107,20 @@ def shortest_path(source, target):
 
         return path.reverse()
 
-    return check(source)
-    #raise NotImplementedError
+    while True:
+        if frontier.empty():
+            return None
+
+        node = frontier.remove()
+        explored.add(node)
+
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state, node, action)
+                if child.state == target:
+                    return back_porp(child)
+                else:
+                    frontier.add(child)    
 
 
 def person_id_for_name(name):
