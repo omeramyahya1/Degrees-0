@@ -100,13 +100,16 @@ def shortest_path(source, target):
 
     explored = set()
     
-    def back_porp(node):
-        path = []
-        while node.parent != None:
-            path.append((node.action, node.parent))
+    def back_prop(node):
+        movies = []
+        persons = []
+        while node.parent is not None:
+            movies.append(node.action)
+            persons.append(child.state)
             node = node.parent
-
-        return path.reverse()
+            movies.reverse()
+            persons.reverse()
+        return list(zip(movies, persons))
 
     while True:
         if frontier.empty():
@@ -119,14 +122,8 @@ def shortest_path(source, target):
             if not frontier.contains_state(state) and state not in explored:
                 child = Node(state, node, action)
                 if child.state == target:
-                    # return back_porp(child)
-                    movies, persons = [], []
-                    while child.parent != None:
-                        movies.append(child.action)
-                        persons.append(child.state)
-                        child = child.parent
-                    movies.reverse(); persons.reverse()
-                    return list(zip(movies, persons))
+                    return back_prop(child)
+
                 else:
                     frontier.add(child)    
 
